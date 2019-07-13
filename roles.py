@@ -37,6 +37,10 @@ class role(object):
     #受击函数有三个参数，分别是攻击者，物理伤害值，元素伤害值(可缺省，缺省值为0)
     #受击函数返回自身受击后的血量
     def onAttack(self, role, dam, fire=0):
+        if dam<0:
+            dam=0
+        if fire<0:
+            fire=0
         self.blood = self.blood-dam-fire
         return self.blood
     #     #print('attacked')
@@ -47,7 +51,7 @@ class role(object):
 
 
 #布洛妮娅子类
-class bulonia(role):
+class buronia(role):
     #charge是必杀技计数器
     def __init__(self, num):
         super().__init__(26, 8, 1, '布洛妮娅')
@@ -68,6 +72,8 @@ class bulonia(role):
         if self.charge % 3 == 0:
             #print('布洛妮娅必杀技发动')
             dam0=random.randint(1,100)-role.shield
+            if dam0<0:
+                dam0=0
         role.onAttack(self,dam0)
         return dam0
     
