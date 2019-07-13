@@ -8,7 +8,7 @@ class role(object):
     #血量
     blood = 100
     #攻击力
-    power = 0
+    arrow = 0
     #防御力
     shield = 0
     #速度值 由极快-->一般-->极慢为 5-->3-->1
@@ -21,8 +21,8 @@ class role(object):
     block = False
 
     #构造函数
-    def __init__(self, power, shield, speed, name0):
-        self.power = power
+    def __init__(self, arrow, shield, speed, name0):
+        self.arrow = arrow
         self.shield = shield
         self.speed = speed
         self.name0 = name0
@@ -30,8 +30,8 @@ class role(object):
     #基本的攻击和受击函数
     #攻击函数有一个参数，标明攻击的对象，，返回伤害值
     def attack(self, role):
-        role.onAttack(self, self.power-role.shield)
-        return self.power-role.shield
+        role.onAttack(self, self.arrow-role.shield)
+        return self.arrow-role.shield
     #     #print('attacking!')
 
     #受击函数有三个参数，分别是攻击者，物理伤害值，元素伤害值(可缺省，缺省值为0)
@@ -40,6 +40,117 @@ class role(object):
         self.blood = self.blood-dam-fire
         return self.blood
     #     #print('attacked')
+
+
+
+#class lilia:可怜的剑圣已经被淘汰了，就不写了==
+
+
+#布洛妮娅子类
+class bulonia(role):
+    #charge是必杀技计数器
+    def __init__(self, num):
+        super().__init__(26, 8, 1, '布洛妮娅')
+        self.charge = 0
+
+    def attack(self, role):
+        #计数器增加，状态判定
+        self.charge += 1
+        if self.block:
+            self.block = False
+            return '0，行动被封锁'
+        if self.silent:
+            self.silent = False
+            return super().attack(role)
+        #普通攻击伤害计算
+        dam0 = self.arrow-role.shield
+        #每3个回合触发必杀技，随机造成1-100点物理伤害,伤害要减对方防御
+        if self.charge % 3 == 0:
+            #print('布洛妮娅必杀技发动')
+            dam0=random.randint(1,100)-role.shield
+        role.onAttack(self,dam0)
+        return dam0
+    
+    def onAttack(self, role, dam, fire=0):
+        #被动15%闪避攻击
+        if random.randint(1,10000)<=1500:
+            #print('布洛妮娅触发了闪避')
+            return self.blood
+        #不触发闪避则正常结算
+        self.blood = self.blood-dam-fire
+        return self.blood
+
+#魔法少女德丽莎的子类
+class teriri(role):
+    #charge是必杀技计数器
+    def __init__(self, num):
+        super().__init__(24, 8, 2, '德丽莎')
+        self.charge = 0
+
+    def attack(self, role):
+        #计数器增加，状态判定
+        self.charge += 1
+        if self.block:
+            self.block = False
+            return '0，行动被封锁'
+        if self.silent:
+            self.silent = False
+            return super().attack(role)
+
+        #普通攻击伤害计算
+        dam0 = self.arrow-role.shield
+        fire0 = 0
+        #每两个回合触发必杀技，造成4次随机的元素伤害
+        if self.charge % 2 == 0:
+            a = random.randint(1, 16)
+            b = random.randint(1, 16)
+            c = random.randint(1, 16)
+            d = random.randint(1, 16)
+            #print('德丽莎发动必杀技：',a,b,c,d)
+            fire0 = a+b+c+d
+            role.onAttack(self, 0, fire0)
+            return fire0
+        role.onAttack(self, dam0, fire0)
+        return dam0+fire0
+
+    def onAttack(self, role, dam, fire=0):
+        #被动减元素伤害
+        self.blood = self.blood-dam-int(0.5*fire)
+        return self.blood
+
+#八重樱子类
+class baChong(role):
+    #onFire是八重樱点燃状态的计数器
+    def __init__(self, num):
+        super().__init__(28, 7, 4, '八重樱')
+        self.onFire=0
+
+    def attack(self, role):
+        #如果对方被点燃，则要受到5点元素伤害
+        #这里选择调用一次对方的受击函数，确保符华的锁血技能、德丽莎的元素减伤等可以正确生效
+        if self.onFire:
+            self.onFire-=1
+            #print(role.name0+'因为点燃受到了5点元素伤害')
+            role.onAttack(self,0,5)
+        #状态判断
+        if self.block:
+            self.block = False
+            return '0，行动被封锁'
+        if self.silent:
+            self.silent = False
+            return str(super().attack(self, role))+',沉默'
+        
+        #20%的概率触发点燃，重复触发刷新持续时间
+        if random.randint(1,10000)<=2000:
+            self.onFire=3
+
+        #25%的概率造成的伤害（计算防御后）翻倍
+        dam0=self.arrow-role.shield
+        if random.randint(1,10000)<=2500:
+            dam0=dam0*2
+        role.onAttack(self,dam0)
+        return dam0
+
 
 #希儿子类
 class xiEr(role):
@@ -67,7 +178,7 @@ class xiEr(role):
             self.silent = False
             return str(super().attack(self, role))+',沉默'
 
-        dam0 = self.power-role.shield
+        dam0 = self.arrow-role.shield
         #每4个回合触发必杀技
         if self.charge % 4 == 0:
             dam0 = (100-role.shield)
@@ -80,6 +191,7 @@ class xiEr(role):
             return dam0
         else:
             return '0,Miss!'
+
 
 #丽塔子类
 class liTa(role):
@@ -96,7 +208,7 @@ class liTa(role):
             self.silent = False
             return str(super().attack(self, role))+',沉默'
         
-        dam0=role.blood-role.onAttack(self, self.power-role.shield)
+        dam0=role.blood-role.onAttack(self, self.arrow-role.shield)
         #回血技能
         if random.randint(1,10000)<=3000:
             self.blood+=dam0
@@ -107,7 +219,7 @@ class liTa(role):
         if random.randint(1,10000)>8000:
             role.block=True
             #print('丽塔使用了岩石封')
-        return self.power-role.shield
+        return self.arrow-role.shield
 
 #罗莎莉亚子类
 class rosalia(role):
@@ -122,7 +234,7 @@ class rosalia(role):
         self.charge += 1
         #先进行伤害值的计算但并不进行攻击，因为倍率special接下来会发生变化
         #普通攻击伤害计算
-        dam0 = (self.power-role.shield)*self.special
+        dam0 = (self.arrow-role.shield)*self.special
         #必杀技伤害计算
         if self.charge % 3 == 0:
             dam0 = (15-role.shield)*(self.special*10)
@@ -168,23 +280,23 @@ class jiZi(role):
         
         #必杀技，两倍攻击力的元素伤害
         if self.charge == True:
-            role.onAttack(self, 0, self.power*2)
+            role.onAttack(self, 0, self.arrow*2)
             self.charge = False
-            return self.power*2
+            return self.arrow*2
         #必杀技的蓄力判定
         if (random.randint(1, 10000) < 3000):
             self.charge = True
             return 0
         #普通的攻击
-        role.onAttack(self, self.power-role.shield)
-        return self.power-role.shield
+        role.onAttack(self, self.arrow-role.shield)
+        return self.arrow-role.shield
 
     def onAttack(self, role, dam, fire=0):
         self.blood = self.blood-dam-fire
         #血量低于40时进入防御状态，官方的战斗里攻击力加成似乎没有触发
         if self.blood < 40 and self.defence == False:
             self.defence = True
-            self.power = self.power*1.5
+            self.arrow = self.arrow*1.5
             self.shield = self.shield*1.5
         return self.blood
 
@@ -213,8 +325,8 @@ class fuHua(role):
             role.onAttack(self, 0, temp)
             return temp
         #普通攻击
-        role.onAttack(self, self.power-role.shield)
-        return self.power-role.shield
+        role.onAttack(self, self.arrow-role.shield)
+        return self.arrow-role.shield
 
     def onAttack(self, role, dam, fire=0):
         #锁血状态下免疫元素伤害
@@ -242,7 +354,7 @@ class kaLian(role):
         if self.defence:
             self.defence-=1
             if self.defence==0:
-                role.power+=15
+                role.arrow+=15
 
         #状态判定
         if self.block:
@@ -258,9 +370,9 @@ class kaLian(role):
         #30%概率触发技能，对方攻击力减15
         if random.randint(1, 10000) <= 3000:
             self.defence = 2
-            role.power-=15
-        role.onAttack(self, self.power-role.shield)
-        return self.power-role.shield
+            role.arrow-=15
+        role.onAttack(self, self.arrow-role.shield)
+        return self.arrow-role.shield
 
 
 #琪亚娜子类
@@ -281,7 +393,7 @@ class qiYaNa(role):
             self.silent = False
             return super().attack(role)
         #正常攻击
-        dam0 = self.power-role.shield
+        dam0 = self.arrow-role.shield
         #每三回合触发必杀攻击
         if (self.charge % 3 == 0):
             dam0 = (12-role.shield)*8
@@ -303,7 +415,7 @@ class yaYi(role):
             return str(super().attack(self, role))+',沉默'
 
         #一般状态下附加5点元素伤害
-        dam0 = self.power-role.shield
+        dam0 = self.arrow-role.shield
         fire0 = 5
         #触发必杀技时，附加20点元素伤害，将对方沉默
         if random.randint(0, 10000) < 3000:
@@ -311,40 +423,3 @@ class yaYi(role):
             role.silent = True
         role.onAttack(self, dam0, fire0)
         return dam0+fire0
-
-#魔法少女的子类
-class teriri(role):
-    #charge是必杀技计数器
-    def __init__(self, num):
-        super().__init__(24, 8, 2, '德丽莎')
-        self.charge = 1
-
-    def attack(self, role):
-        #计数器增加，状态判定
-        self.charge += 1
-        if self.block:
-            self.block = False
-            return '0，行动被封锁'
-        if self.silent:
-            self.silent = False
-            return super().attack(role)
-
-        #普通攻击伤害计算
-        dam0 = self.power-role.shield
-        fire0 = 0
-        #每两个回合触发必杀技，造成4次随机的元素伤害
-        if self.charge % 2 == 0:
-            a = random.randint(1, 16)
-            b = random.randint(1, 16)
-            c = random.randint(1, 16)
-            d = random.randint(1, 16)
-            #print('随机数序列',a,b,c,d)
-            fire0 = a+b+c+d
-            role.onAttack(self, 0, fire0)
-            return fire0
-        role.onAttack(self, dam0, fire0)
-        return dam0+fire0
-
-    def onAttack(self, role, dam, fire=0):
-        self.blood = self.blood-dam-int(0.5*fire)
-        return self.blood
