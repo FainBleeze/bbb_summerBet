@@ -5,9 +5,9 @@ def fight(role1, role2):
     winner = '0'
     #保证速度值高的选手先发
     if (role1.speed < role2.speed):
-            temp = role1
-            role1 = role2
-            role2 = temp
+        temp = role1
+        role1 = role2
+        role2 = temp
     #进入战斗，当有选手血量降为0，比赛停止
     #在每次循环中，两位选手轮流调用自身的attack()成员函数进行攻击
     while winner == '0':
@@ -33,16 +33,17 @@ def fightRe(role1, role2):
     print(role1.name0+' '+role2.name0)
     #保证速度值高的选手先发
     if (role1.speed < role2.speed):
-            temp = role1
-            role1 = role2
-            role2 = temp
+        temp = role1
+        role1 = role2
+        role2 = temp
     #进入战斗，当有选手血量降为0，比赛停止
     #在每次循环中，两位选手轮流调用自身的attack()成员函数进行攻击
+    print(role1.name0+'血量'+str(role1.blood))
+    print(role2.name0+'血量'+str(role2.blood)+' |')
     while (winner == '0'):
-        print(role1.name0+'血量'+str(role1.blood))
-        print(role2.name0+'血量'+str(role2.blood)+' |')
         dam1 = role1.attack(role2)
         print(role1.name0+'进攻，伤害为'+str(dam1))
+        print(role2.name0+'血量'+str(role2.blood)+'。')
         if (role1.blood < 1):
             winner = role2.name0
             break
@@ -51,6 +52,7 @@ def fightRe(role1, role2):
             break
         dam2 = role2.attack(role1)
         print(role2.name0+'进攻，伤害为'+str(dam2))
+        print(role1.name0+'血量'+str(role1.blood)+' |')
         if (role1.blood < 1):
             winner = role2.name0
         if role2.blood < 1:
@@ -75,21 +77,21 @@ def main():
         '丽塔':0,
         '八重樱':0
     }
-    while i < 10000:
-        #角色的初始化语句
-        role1 = roles.kaLian(0)
-        role2 = roles.liTa(0)
+    while i < 4:
+        role1 = roles.fuHua(0)
+        role2 = roles.buronia(0)
         #每场比赛交换位置，如果速度相同可以实现换发，
         # 速度不同的会在fight函数中再次交换，使得速度值高的为role1
         if i%2:
             temp=role1
             role1=role2
             role2=temp
-        #win[fightRe(role1, role2)] += 1
-        win[fight(role1, role2)] += 1
+        win[fightRe(role1, role2)] += 1
+        #win[fight(role1, role2)] += 1
         i += 1
     print('最终结果\n'+role1.name0+'胜利'+str(win[role1.name0])+'次')
     print(role2.name0+'胜利'+str(win[role2.name0])+'次')
+    input()
 
 
 if __name__ == '__main__':
