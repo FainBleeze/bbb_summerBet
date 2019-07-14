@@ -11,7 +11,7 @@
 role1 = roles.kaLian(0)
 role2 = roles.liTa(0)
 #目前的角色有jiZi kaLian liTa baChong rosalia burolia fuHua qiYaNa yaYi xiEr teriri
-#第一天就在小组赛里淘汰的lilia不配拥有姓名==
+#第一天就在小组赛里淘汰的lilia不配拥有姓名=.=
 
 ~~~
 
