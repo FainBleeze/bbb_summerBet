@@ -40,7 +40,7 @@ def fightRe(role1, role2):
     #在每次循环中，两位选手轮流调用自身的attack()成员函数进行攻击
     while (winner == '0'):
         print(role1.name0+'血量'+str(role1.blood))
-        print(role2.name0+'血量'+str(role2.blood))
+        print(role2.name0+'血量'+str(role2.blood)+' |')
         dam1 = role1.attack(role2)
         print(role1.name0+'进攻，伤害为'+str(dam1))
         if (role1.blood < 1):
@@ -76,8 +76,9 @@ def main():
         '八重樱':0
     }
     while i < 10000:
-        role1 = roles.xiEr(0)
-        role2 = roles.rosalia(0)
+        #角色的初始化语句
+        role1 = roles.kaLian(0)
+        role2 = roles.liTa(0)
         #每场比赛交换位置，如果速度相同可以实现换发，
         # 速度不同的会在fight函数中再次交换，使得速度值高的为role1
         if i%2:

@@ -68,7 +68,7 @@ class buronia(role):
             return super().attack(role)
         #普通攻击伤害计算
         dam0 = self.arrow-role.shield
-        #每3个回合触发必杀技，随机造成1-100点物理伤害,伤害要减对方防御
+        #每3个回合触发必杀技，随机造成1-100点物理伤害,伤害减对方防御
         if self.charge % 3 == 0:
             #print('布洛妮娅必杀技发动')
             dam0=random.randint(1,100)-role.shield
@@ -114,7 +114,13 @@ class teriri(role):
             d = random.randint(1, 16)
             #print('德丽莎发动必杀技：',a,b,c,d)
             fire0 = a+b+c+d
-            role.onAttack(self, 0, fire0)
+            #只造成一次攻击
+            #role.onAttack(self, 0, fire0)
+            #分别造成四次攻击
+            role.onAttack(self, 0, a)
+            role.onAttack(self, 0, b)
+            role.onAttack(self, 0, c)
+            role.onAttack(self, 0, d)
             return fire0
         role.onAttack(self, dam0, fire0)
         return dam0+fire0
@@ -144,7 +150,7 @@ class baChong(role):
             return '0，行动被封锁'
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
         
         #20%的概率触发点燃，重复触发刷新持续时间
         if random.randint(1,10000)<=2000:
@@ -182,7 +188,7 @@ class xiEr(role):
             #如果被沉默，调用父类的攻击函数，即只进行普通攻击
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
 
         dam0 = self.arrow-role.shield
         #每4个回合触发必杀技
@@ -212,7 +218,7 @@ class liTa(role):
             return '0，行动被封锁'
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
         
         dam0=role.blood-role.onAttack(self, self.arrow-role.shield)
         #回血技能
@@ -258,7 +264,7 @@ class rosalia(role):
             return '0，行动被封锁'
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
 
         #进行攻击，每三个回合自己的必杀技将对自己进行封锁
         if self.charge % 3 == 0:
@@ -282,7 +288,7 @@ class jiZi(role):
             return '0，行动被封锁'
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
         
         #必杀技，两倍攻击力的元素伤害
         if self.charge == True:
@@ -323,7 +329,7 @@ class fuHua(role):
             return '0，行动被封锁'
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
 
         #每3个回合触发必杀技，随机10-30元素伤害
         if self.charge % 3 == 0:
@@ -368,7 +374,7 @@ class kaLian(role):
             return '0，行动被封锁'
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
         #5%可能直接胜利
         if random.randint(1, 10000) <= 500:
             role.blood = 0
@@ -418,7 +424,7 @@ class yaYi(role):
             return '0，行动被封锁'
         if self.silent:
             self.silent = False
-            return str(super().attack(self, role))+',沉默'
+            return str(super().attack(role))+',沉默'
 
         #一般状态下附加5点元素伤害
         dam0 = self.arrow-role.shield
