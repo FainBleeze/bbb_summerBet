@@ -32,7 +32,7 @@ class role(object):
     def attack(self, role):
         role.onAttack(self, self.arrow-role.shield)
         return self.arrow-role.shield
-    #     print('attacking!')
+    #     #print('attacking!')
 
     #受击函数有三个参数，分别是攻击者，物理伤害值，元素伤害值(可缺省，缺省值为0)
     #受击函数返回自身受击后的血量
@@ -43,7 +43,7 @@ class role(object):
             fire=0
         self.blood = self.blood-dam-fire
         return self.blood
-    #     print('attacked')
+    #     #print('attacked')
 
 
 
@@ -70,11 +70,11 @@ class liTa(role):
             self.blood+=dam0
             if self.blood>100:
                 self.blood=100
-            print('丽塔回血+',dam0)
+            #print('丽塔回血+',dam0)
         #封禁对方攻击的技能
         if random.randint(1,10000)>8000:
             role.block=True
-            print('丽塔使用了必杀，封锁了对手的进攻')
+            #print('丽塔使用了必杀，封锁了对手的进攻')
         return self.arrow-role.shield
 
 #卡莲子类
@@ -89,7 +89,7 @@ class kaLian(role):
         if self.defence:
             self.defence-=1
             if self.defence==0:
-                print('对方的攻击力已恢复')
+                #print('对方的攻击力已恢复')
                 role.arrow+=15
 
         #状态判定
@@ -101,12 +101,12 @@ class kaLian(role):
             return str(super().attack(role))+',沉默'
         #5%可能直接胜利
         if random.randint(1, 10000) <= 500:
-            print('卡莲的对手变成了废人')
+            #print('卡莲的对手变成了废人')
             role.blood = 0
             return '∞，5%必杀'
         #30%概率触发技能，对方攻击力减15
         if random.randint(1, 10000) > 7000:
-            print(role.name0+'对方攻击力下降')
+            #print(role.name0+'攻击力下降')
             #如果已经在减伤状态就不再减攻击了
             if self.defence==0:
                 role.arrow-=15
@@ -136,7 +136,7 @@ class fuHua(role):
         #每3个回合触发必杀技，随机10-30元素伤害
         if self.charge % 3 == 0:
             temp = random.randint(10, 30)
-            print('~赤鸢仙人发动必杀，随机元素伤害'+str(temp))
+            #print('~赤鸢仙人发动必杀，随机元素伤害'+str(temp))
             role.onAttack(self, 0, temp)
             return temp
         #普通攻击
@@ -148,14 +148,14 @@ class fuHua(role):
         if self.defence:
             if fire:
                 fire=0
-                print('~赤鸢已过滤元素伤害')
+                #print('~赤鸢已过滤元素伤害')
             self.blood = self.blood-dam
             return self.blood
         #普通的受击判定
         self.blood = self.blood-dam-fire
         #受到致命伤害时开始锁血
         if self.blood < 1 and self.defence == False:
-            print('~符华开始锁血')
+            #print('~符华开始锁血')
             self.defence = True
             self.blood = 1
         return self.blood
@@ -181,7 +181,7 @@ class buronia(role):
         dam0 = self.arrow-role.shield
         #每3个回合触发必杀技，随机造成1-100点物理伤害,伤害减对方防御
         if self.charge % 3 == 0:
-            print('~布洛妮娅必杀技发动')
+            #print('~布洛妮娅必杀技发动')
             dam0=random.randint(1,100)-role.shield
             if dam0<0:
                 dam0=0
@@ -191,7 +191,7 @@ class buronia(role):
     def onAttack(self, role, dam, fire=0):
         #被动15%闪避攻击
         if random.randint(1,10000)<=1500:
-            print('~布洛妮娅触发了闪避')
+            #print('~布洛妮娅触发了闪避')
             #只免疫物理攻击，无法免疫纯元素攻击
             if dam==0 and fire:
                 self.blood = self.blood-fire
@@ -214,7 +214,7 @@ class baChong(role):
             #点燃状态不受封禁或沉默影响
             if self.onFire:
                 self.onFire-=1
-                print(role.name0+'因为点燃受到了5点元素伤害')
+                #print(role.name0+'因为点燃受到了5点元素伤害')
                 role.onAttack(self,0,5)
             return '0，行动被封锁'
         if self.silent:
@@ -222,25 +222,25 @@ class baChong(role):
             #点燃状态不受封禁或沉默影响
             if self.onFire:
                 self.onFire-=1
-                print(role.name0+'因为点燃受到了5点元素伤害')
+                #print(role.name0+'因为点燃受到了5点元素伤害')
                 role.onAttack(self,0,5)
             return str(super().attack(role))+',沉默'
         
         #25%的概率造成的伤害（计算防御后）翻倍
         dam0=self.arrow-role.shield
         if random.randint(1,10000)<=2500:
-            print('小八造成的伤害翻倍')
+            #print('小八造成的伤害翻倍')
             dam0=dam0*2
 
         #20%的概率触发点燃，重复触发刷新持续时间
         if random.randint(1,10000)<=2000:
-            print('八重樱的攻击触发了点燃')
+            #print('八重樱的攻击触发了点燃')
             self.onFire=3
         #如果对方被点燃，则要受到5点元素伤害
         #这里选择调用一次对方的受击函数，确保符华的锁血技能、德丽莎的元素减伤等可以正确生效
         if self.onFire:
             self.onFire-=1
-            print(role.name0+'因为点燃受到了5点元素伤害')
+            #print(role.name0+'因为点燃受到了5点元素伤害')
             role.onAttack(self,0,5)
 
         role.onAttack(self,dam0)
@@ -265,10 +265,10 @@ class yaYi(role):
         fire0 = 5
         #触发必杀技时，附加20点元素伤害，将对方沉默
         if random.randint(0, 10000) < 3000:
-            print('芽衣将对方沉默')
+            #print('芽衣将对方沉默')
             fire0 = 20
             role.silent = True
-        print('芽衣的攻击附加元素伤害'+str(fire0))
+        #print('芽衣的攻击附加元素伤害'+str(fire0))
         role.onAttack(self, dam0, fire0)
         return dam0+fire0
 
@@ -298,7 +298,7 @@ class teriri(role):
             b = random.randint(1, 16)
             c = random.randint(1, 16)
             d = random.randint(1, 16)
-            print('德丽莎发动必杀技：',a,b,c,d)
+            #print('德丽莎发动必杀技：',a,b,c,d)
             fire0 = a+b+c+d
             #只造成一次攻击
             #role.onAttack(self, 0, fire0)
@@ -332,7 +332,7 @@ class xiEr(role):
         self.blood+=7
         if self.blood>100:
             self.blood=100
-        print('希儿回血+7')
+        #print('希儿回血+7')
 
         #状态判断
         if self.block:

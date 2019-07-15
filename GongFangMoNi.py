@@ -62,7 +62,6 @@ def fightRe(role1, role2):
 
 
 def main():
-    i = 0
     win = {
         '姬子': 0,
         '符华': 0,
@@ -77,21 +76,112 @@ def main():
         '丽塔':0,
         '八重樱':0
     }
-    while i < 4:
-        role1 = roles.fuHua(0)
-        role2 = roles.buronia(0)
+    i = 0
+    while i < 100000:
+        role1 = roles.buronia(0)
+        role2 = roles.baChong(0)
         #每场比赛交换位置，如果速度相同可以实现换发，
         # 速度不同的会在fight函数中再次交换，使得速度值高的为role1
         if i%2:
             temp=role1
             role1=role2
             role2=temp
-        win[fightRe(role1, role2)] += 1
-        #win[fight(role1, role2)] += 1
+        #win[fightRe(role1, role2)] += 1
+        win[fight(role1, role2)] += 1
         i += 1
     print('最终结果\n'+role1.name0+'胜利'+str(win[role1.name0])+'次')
-    print(role2.name0+'胜利'+str(win[role2.name0])+'次')
-    input()
+    print(role2.name0+'胜利'+str(win[role2.name0])+'次\n')
+    
+    # win = {
+        # '姬子': 0,
+        # '符华': 0,
+        # '卡莲': 0,
+        # '琪亚娜': 0,
+        # '芽衣': 0,
+        # '德丽莎': 0,
+        # '萝莎莉娅':0,
+        # '莉莉娅':0,
+        # '布洛妮娅':0,
+        # '希儿':0,
+        # '丽塔':0,
+        # '八重樱':0
+    # }
+    # i = 0
+    # while i < 100000:
+        # role1 = roles.buronia(0)
+        # role2 = roles.kaLian(0)
+        # #每场比赛交换位置，如果速度相同可以实现换发，
+        # # 速度不同的会在fight函数中再次交换，使得速度值高的为role1
+        # if i%2:
+            # temp=role1
+            # role1=role2
+            # role2=temp
+        # #win[fightRe(role1, role2)] += 1
+        # win[fight(role1, role2)] += 1
+        # i += 1
+    # print('最终结果\n'+role1.name0+'胜利'+str(win[role1.name0])+'次')
+    # print(role2.name0+'胜利'+str(win[role2.name0])+'次\n')
+    
+    # win = {
+        # '姬子': 0,
+        # '符华': 0,
+        # '卡莲': 0,
+        # '琪亚娜': 0,
+        # '芽衣': 0,
+        # '德丽莎': 0,
+        # '萝莎莉娅':0,
+        # '莉莉娅':0,
+        # '布洛妮娅':0,
+        # '希儿':0,
+        # '丽塔':0,
+        # '八重樱':0
+    # }
+    # i = 0
+    # while i < 100000:
+        # role1 = roles.fuHua(0)
+        # role2 = roles.baChong(0)
+        # #每场比赛交换位置，如果速度相同可以实现换发，
+        # # 速度不同的会在fight函数中再次交换，使得速度值高的为role1
+        # if i%2:
+            # temp=role1
+            # role1=role2
+            # role2=temp
+        # #win[fightRe(role1, role2)] += 1
+        # win[fight(role1, role2)] += 1
+        # i += 1
+    # print('最终结果\n'+role1.name0+'胜利'+str(win[role1.name0])+'次')
+    # print(role2.name0+'胜利'+str(win[role2.name0])+'次\n')
+    
+    # win = {
+        # '姬子': 0,
+        # '符华': 0,
+        # '卡莲': 0,
+        # '琪亚娜': 0,
+        # '芽衣': 0,
+        # '德丽莎': 0,
+        # '萝莎莉娅':0,
+        # '莉莉娅':0,
+        # '布洛妮娅':0,
+        # '希儿':0,
+        # '丽塔':0,
+        # '八重樱':0
+    # }
+    # i = 0
+    # while i < 100000:
+        # role1 = roles.fuHua(0)
+        # role2 = roles.kaLian(0)
+        # #每场比赛交换位置，如果速度相同可以实现换发，
+        # # 速度不同的会在fight函数中再次交换，使得速度值高的为role1
+        # if i%2:
+            # temp=role1
+            # role1=role2
+            # role2=temp
+        # #win[fightRe(role1, role2)] += 1
+        # win[fight(role1, role2)] += 1
+        # i += 1
+    # print('最终结果\n'+role1.name0+'胜利'+str(win[role1.name0])+'次')
+    # print(role2.name0+'胜利'+str(win[role2.name0])+'次\n')
+    # input()
 
 
 if __name__ == '__main__':
